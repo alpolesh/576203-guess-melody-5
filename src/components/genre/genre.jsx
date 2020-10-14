@@ -9,6 +9,20 @@ class Genre extends PureComponent {
     this.state = {
       answers: [false, false, false, false],
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleSubmit(evt, onAnswer, question) {
+    evt.preventDefault();
+    onAnswer(question, this.state.answers);
+  }
+
+  handleChange(evt, userAnswers, i) {
+    const value = evt.target.checked;
+    this.setState({
+      answers: [...userAnswers.slice(0, i), value, ...userAnswers.slice(i + 1)],
+    });
   }
 
   render() {
@@ -46,8 +60,7 @@ class Genre extends PureComponent {
             <form
               className="game__tracks"
               onSubmit={(evt) => {
-                evt.preventDefault();
-                onAnswer(question, this.state.answers);
+                this.handleSubmit(evt, onAnswer, question);
               }}>
               {answers.map((answer, i) => (
                 <div key={`${i}-${answer.src}`} className="track">
@@ -60,11 +73,7 @@ class Genre extends PureComponent {
                       id={`answer-${i}`}
                       checked={userAnswers[i]}
                       onChange={(evt) => {
-                        const value = evt.target.checked;
-
-                        this.setState({
-                          answers: [...userAnswers.slice(0, i), value, ...userAnswers.slice(i + 1)],
-                        });
+                        this.handleChange(evt, userAnswers, i);
                       }} />
                     <label className="game__check" htmlFor={`answer-${i}`}>Отметить</label>
                   </div>

@@ -47,10 +47,11 @@ class GameScreen extends PureComponent {
             }}
           />
         );
+      default:
+        return (
+          <Redirect to="/" />
+        );
     }
-    return (
-      <Redirect to="/" />
-    );
   }
 }
 
