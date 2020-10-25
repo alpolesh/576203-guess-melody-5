@@ -26,7 +26,7 @@ class Genre extends PureComponent {
   }
 
   render() {
-    const {onAnswer, question, renderPlayer} = this.props;
+    const {onAnswer, question, renderPlayer, children} = this.props;
     const {answers: userAnswers} = this.state;
     const {
       answers,
@@ -48,11 +48,7 @@ class Genre extends PureComponent {
                 style={{filter: `url(#blur)`, transform: `rotate(-90deg) scaleY(-1)`, transformOrigin: `center`}}/>
             </svg>
 
-            <div className="game__mistakes">
-              <div className="wrong"></div>
-              <div className="wrong"></div>
-              <div className="wrong"></div>
-            </div>
+            {children}
           </header>
 
           <section className="game__screen">
@@ -97,6 +93,7 @@ Genre.propTypes = {
     type: PropTypes.oneOf([GameType.ARTIST, GameType.GENRE]).isRequired
   }).isRequired,
   renderPlayer: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default Genre;

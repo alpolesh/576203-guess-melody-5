@@ -6,9 +6,9 @@ import Login from "../login/login";
 import Lose from "../lose/lose";
 import PropTypes from 'prop-types';
 import GameScreen from "../game-screen/game-screen";
+import {MAX_MISTAKE_COUNT} from "../../const";
 
-const App = (props) => {
-  const {errorsCount, questions} = props;
+const App = () => {
 
   return (
     <BrowserRouter>
@@ -17,7 +17,7 @@ const App = (props) => {
           path="/"
           render={({history}) => (
             <WelcomeScreen
-              errorsCount={errorsCount}
+              errorsCount={MAX_MISTAKE_COUNT}
               onPlayButtonClick={() => history.push(`/game`)}
             />
           )}
@@ -34,8 +34,7 @@ const App = (props) => {
         </Route>
         <Route exact path="/game">
           <GameScreen
-            errorsCount={errorsCount}
-            questions={questions}
+            errorsCount={MAX_MISTAKE_COUNT}
           />
         </Route>
       </Switch>
