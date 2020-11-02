@@ -4,7 +4,6 @@ import WelcomeScreen from "../welcome-screen/welcome-screen";
 import Result from "../result/result";
 import Login from "../login/login";
 import Lose from "../lose/lose";
-import PropTypes from 'prop-types';
 import GameScreen from "../game-screen/game-screen";
 import {MAX_MISTAKE_COUNT} from "../../const";
 
@@ -26,11 +25,21 @@ const App = () => {
         <Route exact path="/login">
           <Login />
         </Route>
-        <Route exact path="/result">
-          <Result />
+        <Route exact
+          path="/result"
+          render={({history}) => (
+            <Result
+              onReplayButtonClick={() => history.push(`/game`)}
+            />
+          )}>
         </Route>
-        <Route exact path="/lose">
-          <Lose />
+        <Route exact
+          path="/lose"
+          render={({history}) => (
+            <Lose
+              onReplayButtonClick={() => history.push(`/game`)}
+            />
+          )}>
         </Route>
         <Route exact path="/game">
           <GameScreen
@@ -41,11 +50,6 @@ const App = () => {
     </BrowserRouter>
 
   );
-};
-
-App.propTypes = {
-  errorsCount: PropTypes.number.isRequired,
-  questions: PropTypes.array.isRequired,
 };
 
 export default App;
