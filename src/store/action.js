@@ -7,6 +7,7 @@ export const ActionType = {
   RESET_GAME: `RESET_GAME`,
   LOAD_QUESTIONS: `LOAD_QUESTIONS`,
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
+  REDIRECT_TO_ROUTE: `REDIRECT_TO_ROUTE`,
 };
 
 
@@ -43,4 +44,9 @@ export const loadQuestions = (questions) => ({
 export const requireAuthorization = (status) => ({
   type: ActionType.REQUIRED_AUTHORIZATION,
   payload: status,
+});
+
+export const redirectToRoute = (url) => ({
+  type: ActionType.REDIRECT_TO_ROUTE,
+  payload: url,
 });

@@ -1,47 +1,57 @@
 import React from "react";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import {Router as BrowserRouter, Switch, Route} from "react-router-dom";
 import WelcomeScreen from "../welcome-screen/welcome-screen";
 import Result from "../result/result";
 import Login from "../login/login";
 import Lose from "../lose/lose";
 import GameScreen from "../game-screen/game-screen";
-import {MAX_MISTAKE_COUNT} from "../../const";
+import PrivateRoute from "../private-route/private-route";
+import browserHistory from "../../browser-history";
+import {MAX_MISTAKE_COUNT, AppRoute} from "../../const";
 
 const App = () => {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact
-          path="/"
+          path={AppRoute.ROOT}
           render={({history}) => (
             <WelcomeScreen
               errorsCount={MAX_MISTAKE_COUNT}
-              onPlayButtonClick={() => history.push(`/game`)}
+              onPlayButtonClick={() => history.push(AppRoute.GAME)}
             />
           )}
         >
         </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
         <Route exact
-          path="/result"
+          path={AppRoute.LOGIN}
           render={({history}) => (
-            <Result
-              onReplayButtonClick={() => history.push(`/game`)}
+            <Login
+              onReplayButtonClick={() => history.push(AppRoute.GAME)}
             />
           )}>
         </Route>
+        <PrivateRoute
+          exact
+          path={AppRoute.RESULT}
+          render={({history}) => {
+            return (
+              <Result
+                onReplayButtonClick={() => history.push(AppRoute.GAME)}
+              />
+            );
+          }}
+        />
         <Route exact
-          path="/lose"
+          path={AppRoute.LOSE}
           render={({history}) => (
             <Lose
-              onReplayButtonClick={() => history.push(`/game`)}
+              onReplayButtonClick={() => history.push(AppRoute.GAME)}
             />
           )}>
         </Route>
-        <Route exact path="/game">
+        <Route exact path={AppRoute.GAME}>
           <GameScreen
             errorsCount={MAX_MISTAKE_COUNT}
           />

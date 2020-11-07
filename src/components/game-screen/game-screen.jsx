@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import {incrementStep, incrementMistake, resetGame} from "../../store/action";
-import {GameType, MAX_MISTAKE_COUNT} from "../../const";
+import {GameType, MAX_MISTAKE_COUNT, AppRoute} from "../../const";
 import Artist from "../artist/artist";
 import Genre from "../genre/genre";
 import withAudioPlayer from "../../hocs/with-audio-player/with-audio-player";
@@ -19,7 +19,7 @@ const GameScreen = (props) => {
   const question = questions[step];
   if (mistakes >= MAX_MISTAKE_COUNT) {
     return (
-      <Redirect to="/lose" />
+      <Redirect to={AppRoute.LOSE} />
     );
   }
 
@@ -27,7 +27,7 @@ const GameScreen = (props) => {
 
 
     return (
-      <Redirect to="/result" />
+      <Redirect to={AppRoute.RESULT} />
     );
   }
 
@@ -45,6 +45,7 @@ const GameScreen = (props) => {
     case GameType.GENRE:
       return (
         <GenreWrapped
+          key={step}
           question={question}
           onAnswer={onUserAnswer}
         >
@@ -53,7 +54,7 @@ const GameScreen = (props) => {
       );
     default:
       return (
-        <Redirect to="/" />
+        <Redirect to={AppRoute.ROOT} />
       );
   }
 };

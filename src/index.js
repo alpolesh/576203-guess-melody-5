@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {createStore, applyMiddleware} from "redux";
+import {composeWithDevTools} from "redux-devtools-extension";
 import {Provider} from "react-redux";
 import thunk from "redux-thunk";
 import {createAPI} from "./services/api";
@@ -9,22 +10,33 @@ import rootReducer from "./store/reducers/root-reducer";
 import {requireAuthorization} from "./store/action";
 import {fetchQuestionList, checkAuth} from "./store/api-actions";
 import {AuthorizationStatus} from "./const";
+import {redirect} from "./store/middlewares/redirect";
 
 const api = createAPI(
     () => store.dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH))
 );
 
-const store = createStore(rootReducer, applyMiddleware(thunk.withExtraArgument(api)));
-
-store.dispatch(fetchQuestionList());
-store.dispatch(checkAuth());
-
-ReactDOM.render(
-    <Provider store={store}>
-      <App
-      />
-    </Provider>,
-    document.querySelector(`#root`)
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(
+        applyMiddleware(thunk.withExtraArgument(api)),
+        applyMiddleware(redirect)
+    )
 );
 
-// window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
+Promise.all([
+  store.dispatch(fetchQuestionList()),
+  store.dispatch(checkAuth()),
+])
+.then(() => {
+  ReactDOM.render(
+      <Provider store={store}>
+        <App
+        />
+      </Provider>,
+      document.querySelector(`#root`)
+  );
+
+});
+
+
